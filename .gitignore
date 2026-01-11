@@ -28,3 +28,4 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+database/projeto_db.mv.db
