@@ -23,7 +23,7 @@ public class MonitoramentoController {
 
     public void excluirRefeicao(String tipo) {
         // 1. Chama o DAO para fazer o DELETE
-        dao.removerRefeicao(tipo);
+
 
         // 2. Notificar Observadores
         System.out.println("Refeição " + tipo + " removida do banco.");

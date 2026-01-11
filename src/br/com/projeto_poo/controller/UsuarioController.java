@@ -50,4 +50,22 @@ public class UsuarioController {
         // 3. Persistência(DAO)
         dao.salvar(novoUsuario);
     }
+    // br.com.projeto_poo.controller.UsuarioController
+
+    public void cadastrarESeguir(br.com.projeto_poo.model.Usuario usuario, javax.swing.JFrame telaAtual) {
+        try {
+            // 1. Chama o DAO para salvar
+            new br.com.projeto_poo.dao.UsuarioDAO().salvar(usuario);
+
+            // 2. Notifica sucesso
+            javax.swing.JOptionPane.showMessageDialog(null, "Cadastro realizado! Indo para monitoramento...");
+
+            // 3. FECHA a tela de cadastro e ABRE a de monitoramento
+            telaAtual.dispose();
+            new br.com.projeto_poo.view.TelaMonitoramento().setVisible(true);
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Erro ao salvar: " + e.getMessage());
+        }
+    }
 }

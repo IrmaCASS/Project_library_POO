@@ -1,6 +1,5 @@
 package br.com.projeto_poo.dao;
 
-import br.com.projeto_poo.model.Refeicao; // Supondo que você tenha a Model Refeicao
 import br.com.projeto_poo.util.ConnectionFactory;
 
 import java.sql.Connection;
@@ -13,7 +12,7 @@ public class MonitoramentoDAO {
      * MODIFICAR: Executa o comando UPDATE no banco de dados.
      * Isolamento total: a View e o Controller não veem este SQL.
      */
-    public void atualizarRefeicao(String tipo, String novaDesc, double novasKcal, int usuarioId) {
+    public void atualizarRefeicao(String tipo, String novaDesc, double novasKcal) {
         String sql = "UPDATE refeicoes SET descricao = ?, calorias = ? WHERE tipo_refeicao = ? AND usuario_id = ?";
 
         // Usa o Singleton ConnectionFactory para obter a conexão
@@ -23,7 +22,6 @@ public class MonitoramentoDAO {
             stmt.setString(1, novaDesc);
             stmt.setDouble(2, novasKcal);
             stmt.setString(3, tipo);
-            stmt.setInt(4, usuarioId);
 
             stmt.executeUpdate();
             System.out.println("DAO: Refeição atualizada com sucesso.");
@@ -54,4 +52,5 @@ public class MonitoramentoDAO {
             throw new RuntimeException("Erro de persistência ao remover refeição.", e);
         }
     }
+
 }

@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConnectionH2 {
     // Configurações do H2 (pode ser em memória ou arquivo)
-    private static final String URL = "jdbc:h2:~/testdb;" +
+    private static final String URL = "jdbc:h2:tcp:/testdb" +
             "AUTO_SERVER=TRUE;INIT=RUNSCRIPT FROM 'classpath:Banco_de_dados.sql'";
     private static final String USER = "sa";
     private static final String PASS = "";
