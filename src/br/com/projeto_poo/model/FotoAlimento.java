@@ -9,7 +9,7 @@ public class FotoAlimento {
     private String alimentoReconhecido;
     private double caloriasEstimadas;
     private LocalDateTime data;
-    private String usuari
+    private String usuario;
 
     // Construtor padrão
     public FotoAlimento() {
