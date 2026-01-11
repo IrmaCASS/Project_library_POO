@@ -1,19 +1,21 @@
 package br.com.projeto_poo.view;
 
+import br.com.projeto_poo.controller.UsuarioController;
 import javax.swing.*;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import br.com.projeto_poo.controller;
+import java.util.Date;
 
 public class TelaCadastroUsuario extends JFrame {
-
     // Componentes da Interface
-    private JTextField txtNome, txtIdade, txtPeso, txtAltura, txtGordura, txtMassa, txtMeta, txtData, txtEmail;
+    private JTextField txtNome, txtIdade, txtPeso, txtAltura, txtGordura, txtMassa, txtMeta, txtEmail;
     private JPasswordField txtSenha;
     private JComboBox<String> cbSexo;
     private JButton btnSalvar, btnLimpar;
-
     private UsuarioController controller;
 
     public TelaCadastroUsuario() {
@@ -63,10 +65,6 @@ public class TelaCadastroUsuario extends JFrame {
         txtMeta = new JTextField();
         painelPrincipal.add(txtMeta);
 
-        painelPrincipal.add(new JLabel("Data Cadastro (dd/mm/aaaa):"));
-        txtData = new JTextField();
-        painelPrincipal.add(txtData);
-
         painelPrincipal.add(new JLabel("E-mail:"));
         txtEmail = new JTextField();
         painelPrincipal.add(txtEmail);
@@ -75,13 +73,19 @@ public class TelaCadastroUsuario extends JFrame {
         txtSenha = new JPasswordField();
         painelPrincipal.add(txtSenha);
 
+        // APLICANDO RESTRIÇÃO NUMÉRICA
+        txtIdade.setDocument(new NumericDocument(false)); // Apenas inteiros
+        txtPeso.setDocument(new NumericDocument(true));  // Aceita pontos/vírgulas
+        txtAltura.setDocument(new NumericDocument(true));
+        txtGordura.setDocument(new NumericDocument(true));
+        txtMassa.setDocument(new NumericDocument(true));
+
         // Botões
         btnSalvar = new JButton("Cadastrar");
         btnLimpar = new JButton("Limpar");
 
         painelPrincipal.add(btnLimpar);
         painelPrincipal.add(btnSalvar);
-
         add(painelPrincipal);
 
         // Evento do Botão Salvar
@@ -91,7 +95,6 @@ public class TelaCadastroUsuario extends JFrame {
                 acaoSalvar();
             }
         });
-
         btnLimpar.addActionListener(e -> limparCampos());
     }
 
@@ -101,13 +104,12 @@ public class TelaCadastroUsuario extends JFrame {
             controller.cadastrarUsuario(
                     txtNome.getText(),
                     Integer.parseInt(txtIdade.getText()),
-                    Double.parseDouble(txtPeso.getText()),
-                    Double.parseDouble(txtAltura.getText()),
+                    Float.parseFloat(txtPeso.getText()),
+                    Float.parseFloat(txtAltura.getText()),
                     cbSexo.getSelectedItem().toString(),
-                    Double.parseDouble(txtGordura.getText()),
-                    Double.parseDouble(txtMassa.getText()),
+                    Float.parseFloat(txtGordura.getText()),
+                    Float.parseFloat(txtMassa.getText()),
                     txtMeta.getText(),
-                    txtData.getText(),
                     txtEmail.getText(),
                     new String(txtSenha.getPassword())
             );
@@ -130,11 +132,28 @@ public class TelaCadastroUsuario extends JFrame {
         txtGordura.setText("");
         txtMassa.setText("");
         txtMeta.setText("");
-        txtData.setText("");
         txtEmail.setText("");
         txtSenha.setText("");
     }
 
+    // --- CLASSE INTERNA PARA VALIDAÇÃO EM TEMPO REAL ---
+    private static class NumericDocument extends PlainDocument {
+        private final boolean allowDecimal;
+
+        public NumericDocument(boolean allowDecimal) {
+            this.allowDecimal = allowDecimal;
+        }
+
+        @Override
+        public void insertString(int offs, String str, AttributeSet a) throws BadLocationException, BadLocationException {
+            if (str == null) return;
+
+            String regex = allowDecimal ? "[0-9.,]" : "[0-9]";
+            if (str.matches(regex)) {
+                super.insertString(offs, str, a);
+            }
+        }
+    }
     public static void main(String[] args) {
         // Executa a tela
         SwingUtilities.invokeLater(() -> {

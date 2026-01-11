@@ -2,6 +2,7 @@ package br.com.projeto_poo.model;
 import java.util.Date;
 public class Usuario {
     private String nome;
+    private long id;
     private int idade;
     private float peso;
     private int altura;
@@ -13,15 +14,12 @@ public class Usuario {
     private String email;
     private String senha;
 
-    // Construtor padrÃ£o
     public Usuario() {
     }
 
-    // Getters e Setters
     public String getNome() {
         return nome;
     }
-
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -29,15 +27,20 @@ public class Usuario {
     public int getIdade() {
         return idade;
     }
-
     public void setIdade(int idade) {
         this.idade = idade;
+    }
+
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
     }
 
     public float getPeso() {
         return peso;
     }
-
     public void setPeso(float peso) {
         this.peso = peso;
     }
@@ -45,7 +48,6 @@ public class Usuario {
     public int getAltura() {
         return altura;
     }
-
     public void setAltura(int altura) {
         this.altura = altura;
     }
@@ -53,7 +55,6 @@ public class Usuario {
     public String getSexo() {
         return sexo;
     }
-
     public void setSexo(String sexo) {
         this.sexo = sexo;
     }
@@ -61,7 +62,6 @@ public class Usuario {
     public float getPorcentagemGordura() {
         return porcentagemGordura;
     }
-
     public void setPorcentagemGordura(float porcentagemGordura) {
         this.porcentagemGordura = porcentagemGordura;
     }
@@ -69,7 +69,6 @@ public class Usuario {
     public float getMassaCorporal() {
         return massaCorporal;
     }
-
     public void setMassaCorporal(float massaCorporal) {
         this.massaCorporal = massaCorporal;
     }
@@ -77,7 +76,6 @@ public class Usuario {
     public float getMeta() {
         return meta;
     }
-
     public void setMeta(float meta) {
         this.meta = meta;
     }
@@ -85,7 +83,6 @@ public class Usuario {
     public Date getDataCadastro() {
         return dataCadastro;
     }
-
     public void setDataCadastro(Date dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
@@ -93,7 +90,6 @@ public class Usuario {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -101,7 +97,6 @@ public class Usuario {
     public String getSenha() {
         return senha;
     }
-
     public void setSenha(String senha) {
         this.senha = senha;
     }

@@ -4,10 +4,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class ConnectionFactory {
-
     /**
-     * Retorna uma conexão ativa.
-     * Encapsula a SQLException em uma RuntimeException para simplificar a chamada na View/Controller.
+      Retorna uma conexão ativa.
+      Encapsula a SQLException em uma RuntimeException para simplificar a chamada na View/Controller.
      */
     public static Connection getConnection() {
         try {

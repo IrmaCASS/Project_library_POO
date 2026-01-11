@@ -1,4 +1,4 @@
-CREATE TABLE usuario (
+CREATE TABLE If not exists usuario (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     idade INT NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE usuario (
 
 
 
-CREATE TABLE alimento (
+CREATE TABLE IF not exists alimento (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     calorias DOUBLE NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE alimento (
 
 
 
-CREATE TABLE meta (
+CREATE TABLE IF not exists meta (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     tipo VARCHAR(50) NOT NULL,
     valor DOUBLE NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE meta (
     CONSTRAINT fk_usuario_meta FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );
 
-CREATE TABLE refeicao (
+CREATE TABLE IF not exists refeicao (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     data_registro DATE NOT NULL,
     hora_registro TIME NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE refeicao (
     CONSTRAINT fk_usuario_refeicao FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );
 
-CREATE TABLE refeicao_alimentos (
+CREATE TABLE IF not exists refeicao_alimentos (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     refeicao_id BIGINT NOT NULL,
     alimento_id BIGINT NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE refeicao_alimentos (
     CONSTRAINT fk_alimento_link FOREIGN KEY (alimento_id) REFERENCES alimento(id)
 );
 
-CREATE TABLE relatorio (
+CREATE TABLE IF not exists relatorio (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     total_calorias DOUBLE NOT NULL,
     evolucao_peso DOUBLE NOT NULL,
