@@ -1,6 +1,7 @@
 package br.com.projeto_poo.view;
 
 import br.com.projeto_poo.controller.UsuarioController;
+
 import javax.swing.*;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -8,7 +9,6 @@ import javax.swing.text.PlainDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
 
 public class TelaCadastroUsuario extends JFrame {
     // Componentes da Interface
@@ -98,9 +98,12 @@ public class TelaCadastroUsuario extends JFrame {
         btnLimpar.addActionListener(e -> limparCampos());
     }
 
+// Dentro de br.com.projeto_poo.view.TelaCadastroUsuario
+
+    // Local: br.com.projeto_poo.view.TelaCadastroUsuario
+
     private void acaoSalvar() {
         try {
-            // Captura os dados da View e envia para o Controller
             controller.cadastrarUsuario(
                     txtNome.getText(),
                     Integer.parseInt(txtIdade.getText()),
@@ -111,16 +114,13 @@ public class TelaCadastroUsuario extends JFrame {
                     Float.parseFloat(txtMassa.getText()),
                     txtMeta.getText(),
                     txtEmail.getText(),
-                    new String(txtSenha.getPassword())
+                    new String(txtSenha.getPassword()),
+                    this // <--- ESTE "this" é a telaAtual que o controller vai fechar
             );
 
-            JOptionPane.showMessageDialog(this, "Usuário cadastrado com sucesso!");
-            limparCampos();
-
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Erro: Verifique se os campos numéricos estão corretos.", "Erro de Validação", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Sucesso!");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Erro ao salvar: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
         }
     }
 

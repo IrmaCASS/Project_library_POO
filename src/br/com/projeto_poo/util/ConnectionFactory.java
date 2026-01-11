@@ -2,12 +2,12 @@ package br.com.projeto_poo.util;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.DriverManager;
 
 public class ConnectionFactory {
+
     /**
-      Retorna uma conexão ativa.
-      Encapsula a SQLException em uma RuntimeException para simplificar a chamada na View/Controller.
+     * Retorna uma conexão ativa.
+     * Encapsula a SQLException em uma RuntimeException para simplificar a chamada na View/Controller.
      */
     public static Connection getConnection() {
         try {

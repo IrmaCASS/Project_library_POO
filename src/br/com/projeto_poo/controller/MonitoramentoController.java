@@ -1,31 +1,35 @@
 package br.com.projeto_poo.controller;
 
 import br.com.projeto_poo.dao.MonitoramentoDAO;
+import java.util.List; // Não esqueça deste import!
 
 public class MonitoramentoController {
+    private MonitoramentoDAO dao = new MonitoramentoDAO();
 
-    private MonitoramentoDAO dao;
-
-    public MonitoramentoController() {
-        this.dao = new MonitoramentoDAO(); // DAO isola o SQL
+    // ESTE É O MÉTODO QUE ESTAVA FALTANDO:
+    public List<String[]> listarRefeicoes(int usuarioId) {
+        return dao.buscarPorUsuario(usuarioId);
     }
 
-    public void modificarRefeicao(String tipo, String novaDesc, String novaKcal) {
-        // 1. Validação
-        if(novaDesc.isEmpty()) return;
-
-        // 2. Chama o DAO para fazer o UPDATE no banco
-        dao.atualizarRefeicao(tipo, novaDesc, Double.parseDouble(novaKcal));
-
-        // 3. Notificar Observadores (Padrão Observer)
-        // Notificador.notificarMudanca();
+    public void adicionarRefeicao(String tipo, String desc, String kcal, int usuarioId) {
+        try {
+            double valorKcal = Double.parseDouble(kcal.replace(",", "."));
+            dao.salvarRefeicao(tipo, desc, valorKcal, usuarioId);
+        } catch (NumberFormatException e) {
+            System.err.println("Erro ao converter calorias: " + e.getMessage());
+        }
     }
 
-    public void excluirRefeicao(String tipo) {
-        // 1. Chama o DAO para fazer o DELETE
+    public void excluirRefeicao(String tipo, int usuarioId) {
+        dao.excluirRefeicao(tipo, usuarioId);
+    }
 
-
-        // 2. Notificar Observadores
-        System.out.println("Refeição " + tipo + " removida do banco.");
+    public void modificarRefeicao(String tipo, String novaDesc, String novaKcal, int usuarioId) {
+        try {
+            double kcal = Double.parseDouble(novaKcal.replace(",", "."));
+            dao.atualizarRefeicao(tipo, novaDesc, kcal, usuarioId);
+        } catch (NumberFormatException e) {
+            System.err.println("Erro: Valor de calorias inválido.");
+        }
     }
 }

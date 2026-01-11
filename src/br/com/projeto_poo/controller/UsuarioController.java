@@ -2,70 +2,27 @@ package br.com.projeto_poo.controller;
 
 import br.com.projeto_poo.dao.UsuarioDAO;
 import br.com.projeto_poo.model.Usuario;
+import br.com.projeto_poo.view.TelaMonitoramento;
+import javax.swing.JFrame;
 import java.util.Date;
 
 public class UsuarioController {
-    private UsuarioDAO dao;
-
-    public UsuarioController() {
-        // O Controller depende do DAO para persistir os dados
-        this.dao = new UsuarioDAO();
-    }
+    private UsuarioDAO dao = new UsuarioDAO();
 
     public void cadastrarUsuario(String nome, int idade, float peso, float altura, String sexo,
-                                 float porcentagemGordura, float massaCorporal, String meta,
-                                 String email, String senha) throws Exception {
+                                 float gordura, float massa, String meta, String email, String senha, JFrame tela) {
 
-        // 1. Lógica de Validação (Controller)
-        if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("O nome é obrigatório.");
-        }if (email == null || email.trim().isEmpty()) {
-            throw new IllegalArgumentException("O emaill é obrigatório.");
-        }if (senha == null || senha.trim().isEmpty()) {
-            throw new IllegalArgumentException("O senha é obrigatório.");
-        }if (idade == 0.0) {
-            throw new IllegalArgumentException("O idade é obrigatório.");
-        }if (sexo == null || sexo.trim().isEmpty()) {
-            throw new IllegalArgumentException("O senha é obrigatório.");
-        }if (peso == 0.0) {
-            throw new IllegalArgumentException("O peso é obrigatório.");
-        }if (altura == 0.0) {
-            throw new IllegalArgumentException("O idade é obrigatório.");
-        }
+        Usuario u = new Usuario();
+        u.setNome(nome); u.setIdade(idade); u.setPeso(peso); u.setAltura((int)altura);
+        u.setSexo(sexo); u.setPorcentagemGordura(gordura); u.setMassaCorporal(massa);
+        u.setMeta(Float.parseFloat(meta)); u.setEmail(email); u.setSenha(senha);
+        u.setDataCadastro(new Date());
 
-        // 2. Criação do Objeto Model (Model)
-        Usuario novoUsuario = new Usuario();
-        novoUsuario.setNome(nome);
-        novoUsuario.setIdade(idade);
-        novoUsuario.setPeso(peso);
-        novoUsuario.setEmail(email);
-        novoUsuario.setSenha(senha);
-        novoUsuario.setDataCadastro(new Date());
-        novoUsuario.setMassaCorporal(massaCorporal);
-        novoUsuario.getMeta();
-        novoUsuario.setSexo(sexo);
-        novoUsuario.setPorcentagemGordura(porcentagemGordura);
-        // adicionar os demais campos
+        // SALVA NO BANCO E GERA O ID
+        dao.salvar(u);
 
-        // 3. Persistência(DAO)
-        dao.salvar(novoUsuario);
-    }
-    // br.com.projeto_poo.controller.UsuarioController
-
-    public void cadastrarESeguir(br.com.projeto_poo.model.Usuario usuario, javax.swing.JFrame telaAtual) {
-        try {
-            // 1. Chama o DAO para salvar
-            new br.com.projeto_poo.dao.UsuarioDAO().salvar(usuario);
-
-            // 2. Notifica sucesso
-            javax.swing.JOptionPane.showMessageDialog(null, "Cadastro realizado! Indo para monitoramento...");
-
-            // 3. FECHA a tela de cadastro e ABRE a de monitoramento
-            telaAtual.dispose();
-            new br.com.projeto_poo.view.TelaMonitoramento().setVisible(true);
-
-        } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Erro ao salvar: " + e.getMessage());
-        }
+        // FECHA A TELA ATUAL E ABRE A PRÓXIMA PASSANDO O USUÁRIO (O argumento esperado!)
+        if (tela != null) tela.dispose();
+        new TelaMonitoramento(u).setVisible(true);
     }
 }
