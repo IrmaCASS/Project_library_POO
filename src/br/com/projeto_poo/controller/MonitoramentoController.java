@@ -1,17 +1,16 @@
 package br.com.projeto_poo.controller;
 
-import br.com.projeto_poo.dao.MonitoramentoDAO;
+import br.com.projeto_poo.dao.RefeicaoDAO;
+import br.com.projeto_poo.model.Refeicao;
+
 import java.util.List;
 
 public class MonitoramentoController {
-    private MonitoramentoDAO dao = new MonitoramentoDAO();
+   // private MonitoramentoDAO dao = new MonitoramentoDAO();
 
-    // 1. Lista refeições filtrando por usuário e data
-    public List<String[]> listarRefeicoesPorData(int usuarioId, String data) {
-        return dao.buscarPorData(usuarioId, data);
-    }
+    private RefeicaoDAO refeicaoDao = new RefeicaoDAO();
 
-    // 2. Calcula o total de calorias de uma lista de refeições (Calculadora)
+     // 2. Calcula o total de calorias de uma lista de refeições (Calculadora)
     public double calcularTotalCalorias(List<String[]> refeicoes) {
         double total = 0;
         for (String[] r : refeicoes) {
@@ -26,30 +25,21 @@ public class MonitoramentoController {
     }
 
     // Mantendo os métodos anteriores com melhoria no tratamento de números
-    public void adicionarRefeicao(String tipo, String desc, String kcal, int usuarioId) {
-        try {
-            double valorKcal = Double.parseDouble(kcal.replace(",", "."));
-            dao.salvarRefeicao(tipo, desc, valorKcal, usuarioId);
-        } catch (NumberFormatException e) {
-            System.err.println("Erro ao converter calorias: " + e.getMessage());
-        }
+    public void excluirRefeicao(Long refeicaoId) {
+        refeicaoDao.excluir(refeicaoId);
     }
 
-    public void excluirRefeicao(String tipo, int usuarioId) {
-        dao.excluirRefeicao(tipo, usuarioId);
-    }
-
-    public void modificarRefeicao(String tipo, String novaDesc, String novaKcal, int usuarioId) {
+    public void modificarRefeicao(Long refeicaoId, String tipo, String novaKcal) {
         try {
             double kcal = Double.parseDouble(novaKcal.replace(",", "."));
-            dao.atualizarRefeicao(tipo, novaDesc, kcal, usuarioId);
+            refeicaoDao.atualizar(refeicaoId, tipo, kcal);
         } catch (NumberFormatException e) {
             System.err.println("Erro: Valor de calorias inválido.");
         }
     }
 
     // Caso precise listar tudo sem filtro de data (para compatibilidade)
-    public List<String[]> listarRefeicoes(int usuarioId) {
-        return dao.buscarPorUsuario(usuarioId);
+    public List<Refeicao> listarRefeicoes(Long usuarioId) {
+        return refeicaoDao.buscarPorUsuario(usuarioId);
     }
 }

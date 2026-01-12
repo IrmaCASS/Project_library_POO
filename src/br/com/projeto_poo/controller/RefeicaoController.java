@@ -554,21 +554,11 @@ public class RefeicaoController {
         this.alimentoDAO = new AlimentoDAO();
     }
 
-    /**
-     * Salva uma nova refeição com sua lista de alimentos no banco de dados
-     * @param refeicao Objeto Refeicao com os dados da refeição
-     * @param alimentos Lista de alimentos consumidos na refeição
-     * @return ID da refeição criada ou null se falhar
-     */
-    public Long salvarRefeicao(Refeicao refeicao, List<Alimento> alimentos) {
+    public Long salvarRefeicao(Refeicao refeicao) {
         try {
             // Validações
             if (refeicao == null) {
                 throw new IllegalArgumentException("Refeição não pode ser nula!");
-            }
-
-            if (alimentos == null || alimentos.isEmpty()) {
-                throw new IllegalArgumentException("A refeição deve conter pelo menos um alimento!");
             }
 
             if (!validarRefeicao(refeicao)) {
@@ -577,14 +567,13 @@ public class RefeicaoController {
 
             // Calcular total de calorias baseado nos alimentos
             double totalCalorias = 0;
-            for (Alimento alimento : alimentos) {
+            for (Alimento alimento : refeicao.getAlimentos()) {
                 if (alimento != null) {
                     totalCalorias += alimento.getCalorias();
                 }
             }
 
             // Configurar a refeição com os alimentos e total de calorias
-            refeicao.setAlimentos(alimentos);
             refeicao.setTotalCalorias(totalCalorias);
 
             // REALMENTE SALVAR NO BANCO DE DADOS VIA DAO
@@ -606,10 +595,9 @@ public class RefeicaoController {
     /**
      * Modifica uma refeição existente e sua lista de alimentos no banco de dados
      * @param refeicao Objeto Refeicao com os dados atualizados
-     * @param alimentos Nova lista de alimentos da refeição
      * @return true se modificou com sucesso, false caso contrário
      */
-    public boolean modificarRefeicao(Refeicao refeicao, List<Alimento> alimentos) {
+    public boolean modificarRefeicao(Refeicao refeicao) {
         try {
             // Validações
             if (refeicao == null) {
@@ -620,31 +608,15 @@ public class RefeicaoController {
                 throw new IllegalArgumentException("ID da refeição inválido para modificação!");
             }
 
-            if (alimentos == null || alimentos.isEmpty()) {
-                throw new IllegalArgumentException("A refeição deve conter pelo menos um alimento!");
-            }
-
             if (!validarRefeicao(refeicao)) {
                 return false;
             }
-
-            // Recalcular total de calorias baseado nos novos alimentos
-            double totalCalorias = 0;
-            for (Alimento alimento : alimentos) {
-                if (alimento != null) {
-                    totalCalorias += alimento.getCalorias();
-                }
-            }
-
-            // Atualizar a refeição com os novos dados
-            refeicao.setAlimentos(alimentos);
-            refeicao.setTotalCalorias(totalCalorias);
 
             // REALMENTE ATUALIZAR NO BANCO DE DADOS VIA DAO
             boolean sucesso = refeicaoDAO.atualizar(
                     refeicao.getId(),
                     refeicao.getTipo(),
-                    totalCalorias
+                    refeicao.getTotalCalorias()
             );
 
             return sucesso;
@@ -661,7 +633,7 @@ public class RefeicaoController {
      * @param usuarioId ID do usuário
      * @return Lista de refeições do usuário (vazia se não houver)
      */
-    public List<Refeicao> listarRefeicoes(int usuarioId) {
+    public List<Refeicao> listarRefeicoes(Long usuarioId) {
         try {
             // Validação
             if (usuarioId <= 0) {

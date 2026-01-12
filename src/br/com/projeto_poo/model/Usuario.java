@@ -1,8 +1,8 @@
 package br.com.projeto_poo.model;
 import java.util.Date;
-public class Usuario {
+public class Usuario extends Entidade{
     private String nome;
-    private long id;
+    private Long id;
     private int idade;
     private float peso;
     private int altura;
@@ -31,10 +31,10 @@ public class Usuario {
         this.idade = idade;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

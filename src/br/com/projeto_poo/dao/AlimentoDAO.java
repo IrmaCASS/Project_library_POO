@@ -25,9 +25,7 @@ public class AlimentoDAO {
             stmt.setDouble(3, alimento.getProteinas());
             stmt.setDouble(4, alimento.getCarboidratos());
             stmt.setDouble(5, alimento.getGorduras());
-            stmt.setString(6, alimento.getCategoria() != null ? alimento.getCategoria() : "Geral");
-            stmt.setDouble(7, alimento.getPorcaoPadrao() > 0 ? alimento.getPorcaoPadrao() : 100.0);
-            
+
             int rowsAffected = stmt.executeUpdate();
             
             if (rowsAffected > 0) {
@@ -185,8 +183,6 @@ public class AlimentoDAO {
             stmt.setDouble(3, alimento.getProteinas());
             stmt.setDouble(4, alimento.getCarboidratos());
             stmt.setDouble(5, alimento.getGorduras());
-            stmt.setString(6, alimento.getCategoria());
-            stmt.setDouble(7, alimento.getPorcaoPadrao());
             stmt.setLong(8, alimento.getId());
             
             int rowsAffected = stmt.executeUpdate();
@@ -288,8 +284,6 @@ public class AlimentoDAO {
         alimento.setProteinas(rs.getDouble("proteinas"));
         alimento.setCarboidratos(rs.getDouble("carboidratos"));
         alimento.setGorduras(rs.getDouble("gorduras"));
-        alimento.setCategoria(rs.getString("categoria"));
-        alimento.setPorcaoPadrao(rs.getDouble("porcao_padrao"));
         return alimento;
     }
 }

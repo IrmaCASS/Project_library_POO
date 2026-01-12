@@ -1,16 +1,22 @@
 package br.com.projeto_poo.model;
 
-public class Alimento {
+public class Alimento extends Entidade{
     private String nome;
     private double calorias;
     private double proteinas;
     private double carboidratos;
     private double gorduras;
-    private String categoria;
-    private double porcaoPadrao;
-    private long id;
+    private Long id;
 
     public Alimento() {
+    }
+
+    public Alimento(String nome, double calorias, double proteinas, double carboidratos, double gorduras) {
+        this.nome = nome;
+        this.calorias = calorias;
+        this.proteinas = proteinas;
+        this.carboidratos = carboidratos;
+        this.gorduras = gorduras;
     }
 
     public String getNome() {
@@ -47,24 +53,11 @@ public class Alimento {
     public void setGorduras(double gorduras) {
         this.gorduras = gorduras;
     }
-    public String getCategoria() {
-        return categoria;
-    }
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
-    public double getPorcaoPadrao() {
-        return porcaoPadrao;
-    }
-    public void setPorcaoPadrao(double porcaoPadrao) {
-        this.porcaoPadrao = porcaoPadrao;
-    }
 
     public void setId(Long id) {
         this.id = id;
     }
-    public long getId(){
+    public Long getId(){
         return this.id;
     }
 }

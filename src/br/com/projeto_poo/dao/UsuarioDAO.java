@@ -40,7 +40,7 @@ public class UsuarioDAO {
 
             if (rs.next()) {
                 Usuario u = new Usuario();
-                u.setId(rs.getInt("id"));
+                u.setId(rs.getLong("id"));
                 u.setNome(rs.getString("nome"));
                 u.setIdade(rs.getInt("idade"));
                 u.setPeso(rs.getFloat("peso"));
@@ -77,7 +77,7 @@ public class UsuarioDAO {
             ps.executeUpdate();
 
             ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) u.setId(rs.getInt(1));
+            if (rs.next()) u.setId(rs.getLong(1));
         } catch (SQLException e) { throw new RuntimeException(e); }
     }
 }

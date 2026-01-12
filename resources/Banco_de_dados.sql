@@ -21,9 +21,7 @@ CREATE TABLE IF not exists alimento (
     calorias DOUBLE NOT NULL,
     proteinas DOUBLE NOT NULL,
     carboidratos DOUBLE NOT NULL,
-    gorduras DOUBLE NOT NULL,
-    categoria VARCHAR(100),
-    porcao_padrao DOUBLE NOT NULL
+    gorduras DOUBLE NOT NULL
 );
 
 
@@ -43,15 +41,12 @@ CREATE TABLE IF not exists refeicao (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     data_registro DATE NOT NULL,
     hora_registro TIME NOT NULL,
-    usuario_id INT NOT NULL,
+    usuario_id BIGINT NOT NULL,
     total_calorias DOUBLE NOT NULL,
-    tipo VARCHAR(20) NOT NULL,
-    -- Referência para a tabela usuario
-    CONSTRAINT fk_usuario_refeicao FOREIGN KEY (usuario_id) REFERENCES usuario(id)
+    tipo VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE IF not exists refeicao_alimentos (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     refeicao_id BIGINT NOT NULL,
     alimento_id BIGINT NOT NULL,
     -- Chaves estrangeiras para manter a integridade

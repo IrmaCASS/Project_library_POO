@@ -1,12 +1,22 @@
 package br.com.projeto_poo.view;
 import br.com.projeto_poo.controller.RefeicaoController;
+import br.com.projeto_poo.model.Alimento;
+import br.com.projeto_poo.model.Refeicao;
+import br.com.projeto_poo.model.Usuario;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class TelaCadastroRefeicao extends JFrame {
     private JComboBox<String> cbTipoRefeicao;
@@ -17,9 +27,11 @@ public class TelaCadastroRefeicao extends JFrame {
 
     // ID do usuário - VOCÊ PRECISA DEFINIR COMO OBTER ISSO
     // Opções: 1) Passar no construtor, 2) Buscar do usuário logado, 3) Solicitar no início
-    private int usuarioIdLogado = 1; // TEMPORÁRIO: Altere conforme sua lógica
+    private Long usuarioIdLogado = 1L; // TEMPORÁRIO: Altere conforme sua lógica
+    private TelaMonitoramento parent;
 
-    public TelaCadastroRefeicao() {
+    public TelaCadastroRefeicao(TelaMonitoramento parent) {
+        this.parent = parent;
         setTitle("Cadastro de Refeição");
         setSize(700, 550);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -119,12 +131,6 @@ public class TelaCadastroRefeicao extends JFrame {
         add(painelInferior, BorderLayout.SOUTH);
     }
 
-    // MÉTODO OPCIONAL: Se você quiser passar o ID do usuário ao criar a tela
-    public TelaCadastroRefeicao(int usuarioId) {
-        this();
-        this.usuarioIdLogado = usuarioId;
-    }
-
     private void abrirDialogoAlimento(ActionEvent e) {
         JTextField nome = new JTextField();
         JTextField cal = new JTextField();
@@ -186,7 +192,16 @@ public class TelaCadastroRefeicao extends JFrame {
         if (linhaSelecionada >= 0) {
             // Subtrai as calorias do item removido
             String caloriasStr = tableModel.getValueAt(linhaSelecionada, 1).toString();
-            double calorias = Double.parseDouble(caloriasStr);
+
+            Locale brasil = new Locale("pt", "BR");
+            NumberFormat nf = NumberFormat.getInstance(brasil);
+
+            double calorias = 0;
+            try {
+                calorias = nf.parse(caloriasStr).doubleValue();
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
             totalCaloriasAcumuladas -= calorias;
 
             tableModel.removeRow(linhaSelecionada);
@@ -230,6 +245,10 @@ public class TelaCadastroRefeicao extends JFrame {
             descricao.append("Data: ").append(data).append(" às ").append(hora).append("\n");
             descricao.append("Alimentos:\n");
 
+            String totalCaloriasStr = String.format("%.2f", totalCaloriasAcumuladas);
+
+            List<Alimento> alimentos = new ArrayList<Alimento>();
+
             for (int i = 0; i < tableModel.getRowCount(); i++) {
                 String nomeAlimento = tableModel.getValueAt(i, 0).toString();
                 String calorias = tableModel.getValueAt(i, 1).toString();
@@ -237,24 +256,36 @@ public class TelaCadastroRefeicao extends JFrame {
                 String carboidratos = tableModel.getValueAt(i, 3).toString();
                 String gorduras = tableModel.getValueAt(i, 4).toString();
 
+
+                Locale brasil = new Locale("pt", "BR");
+                NumberFormat nf = NumberFormat.getInstance(brasil);
+
+                double proteinasDouble = nf.parse(proteinas).doubleValue();
+                double carboidratosDouble = nf.parse(carboidratos).doubleValue();
+                double gordurasDouble = nf.parse(gorduras).doubleValue();
+                double caloriasDouble = nf.parse(calorias).doubleValue();
+
+
+                Alimento alimento = new Alimento(nomeAlimento, proteinasDouble, carboidratosDouble,
+                        gordurasDouble, caloriasDouble );
+                alimentos.add(alimento);
+
                 descricao.append(String.format(
                         "- %s: %s kcal (Prot: %sg, Carb: %sg, Gord: %sg)\n",
                         nomeAlimento, calorias, proteinas, carboidratos, gorduras
                 ));
             }
 
-            // Converter total de calorias para String
-            String totalCaloriasStr = String.format("%.2f", totalCaloriasAcumuladas);
+            Usuario usuarioLogado = new Usuario();
+            usuarioLogado.setId(usuarioIdLogado);
+
+            Refeicao refeicao = new Refeicao(alimentos, usuarioLogado,  0, tipoRefeicao);
+            refeicao.setData(LocalDate.now());
+            refeicao.setHora(LocalTime.now());
 
             // Chamar o controller com os parâmetros corretos
             RefeicaoController controller = new RefeicaoController();
-            controller.salvarRefeicao()
-            /*controller.adicionarRefeicao(
-                    tipoRefeicao,           // tipo: "Café da Manhã", "Almoço", etc.
-                    descricao.toString(),   // desc: descrição completa com alimentos
-                    totalCaloriasStr,       // kcal: total de calorias como String
-                    usuarioIdLogado         // usuarioId: ID do usuário logado
-            );*/
+            controller.salvarRefeicao(refeicao);
 
             JOptionPane.showMessageDialog(
                     this,
@@ -267,6 +298,10 @@ public class TelaCadastroRefeicao extends JFrame {
             );
 
             limparFormulario();
+
+            this.parent.carregarDadosIniciais();
+
+            this.dispose();
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(

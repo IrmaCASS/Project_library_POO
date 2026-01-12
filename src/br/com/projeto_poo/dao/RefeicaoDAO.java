@@ -34,7 +34,7 @@ public class RefeicaoDAO {
             try (PreparedStatement stmt = conn.prepareStatement(sqlRefeicao, Statement.RETURN_GENERATED_KEYS)) {
                 stmt.setDate(1, Date.valueOf(refeicao.getData()));
                 stmt.setTime(2, Time.valueOf(refeicao.getHora()));
-                stmt.setLong(3, refeicao.getUsuario().getId());
+                stmt.setInt(3, refeicao.getUsuario().getId().intValue());
                 stmt.setDouble(4, refeicao.getTotalCalorias());
                 stmt.setString(5, refeicao.getTipo());
                 
@@ -51,7 +51,7 @@ public class RefeicaoDAO {
             if (refeicao.getAlimentos() != null && !refeicao.getAlimentos().isEmpty()) {
                 for (Alimento alimento : refeicao.getAlimentos()) {
                     // Buscar ou criar alimento
-                    Long alimentoId = buscarOuCriarAlimento(conn, alimento);
+                    Long alimentoId = criarAlimento(conn, alimento);
                     
                     // Vincular alimento à refeição
                     vincularAlimentoRefeicao(conn, refeicaoId, alimentoId);
@@ -123,10 +123,9 @@ public class RefeicaoDAO {
     /**
      * Busca todas as refeições de um usuário
      */
-    public List<Refeicao> buscarPorUsuario(int usuarioId) {
-        String sql = "SELECT r.*, u.nome as usuario_nome, u.email as usuario_email " +
+    public List<Refeicao> buscarPorUsuario(Long usuarioId) {
+        String sql = "SELECT r.*" +
                     "FROM refeicao r " +
-                    "INNER JOIN usuario u ON r.usuario_id = u.id " +
                     "WHERE r.usuario_id = ? " +
                     "ORDER BY r.data_registro DESC, r.hora_registro DESC";
         
@@ -135,7 +134,7 @@ public class RefeicaoDAO {
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
-            stmt.setInt(1, usuarioId);
+            stmt.setLong(1, usuarioId);
             ResultSet rs = stmt.executeQuery();
             
             while (rs.next()) {
@@ -421,30 +420,17 @@ public class RefeicaoDAO {
     /**
      * Busca ou cria um alimento (evita duplicatas)
      */
-    private Long buscarOuCriarAlimento(Connection conn, Alimento alimento) throws SQLException {
-        // Verificar se alimento já existe pelo nome
-        String sqlBusca = "SELECT id FROM alimento WHERE nome = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sqlBusca)) {
-            stmt.setString(1, alimento.getNome());
-            ResultSet rs = stmt.executeQuery();
-            
-            if (rs.next()) {
-                return rs.getLong("id");
-            }
-        }
-        
+    private Long criarAlimento(Connection conn, Alimento alimento) throws SQLException {
         // Se não existe, criar novo
-        String sqlInsert = "INSERT INTO alimento (nome, calorias, proteinas, carboidratos, gorduras, categoria, porcao_padrao) " +
-                          "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sqlInsert = "INSERT INTO alimento (nome, calorias, proteinas, carboidratos, gorduras) " +
+                          "VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, alimento.getNome());
             stmt.setDouble(2, alimento.getCalorias());
             stmt.setDouble(3, alimento.getProteinas());
             stmt.setDouble(4, alimento.getCarboidratos());
             stmt.setDouble(5, alimento.getGorduras());
-            stmt.setString(6, alimento.getCategoria() != null ? alimento.getCategoria() : "Geral");
-            stmt.setDouble(7, alimento.getPorcaoPadrao() > 0 ? alimento.getPorcaoPadrao() : 100.0);
-            
+
             stmt.executeUpdate();
             
             ResultSet rs = stmt.getGeneratedKeys();
@@ -490,8 +476,6 @@ public class RefeicaoDAO {
                 alimento.setProteinas(rs.getDouble("proteinas"));
                 alimento.setCarboidratos(rs.getDouble("carboidratos"));
                 alimento.setGorduras(rs.getDouble("gorduras"));
-                alimento.setCategoria(rs.getString("categoria"));
-                alimento.setPorcaoPadrao(rs.getDouble("porcao_padrao"));
                 alimentos.add(alimento);
             }
         }
@@ -509,13 +493,6 @@ public class RefeicaoDAO {
         refeicao.setHora(rs.getTime("hora_registro").toLocalTime());
         refeicao.setTotalCalorias(rs.getDouble("total_calorias"));
         refeicao.setTipo(rs.getString("tipo"));
-        
-        // Criar objeto Usuario básico
-        Usuario usuario = new Usuario();
-        usuario.setId(rs.getInt("usuario_id"));
-        usuario.setNome(rs.getString("usuario_nome"));
-        usuario.setEmail(rs.getString("usuario_email"));
-        refeicao.setUsuario(usuario);
         
         return refeicao;
     }
