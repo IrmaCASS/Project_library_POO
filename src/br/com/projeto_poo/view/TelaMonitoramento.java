@@ -150,9 +150,16 @@ public class TelaMonitoramento extends JFrame {
 
         JButton btnDel = new JButton("Excluir");
         btnDel.addActionListener(e -> {
+<<<<<<< HEAD
             // Definindo as opções personalizadas
             Object[] opcoes = {"Sim", "Não"};
 
+=======
+            // Definimos os textos dos botões em um array
+            Object[] opcoes = {"Sim", "Não"};
+
+            // Usamos o showOptionDialog para ter controle total sobre os botões
+>>>>>>> a77dc080149cb695f1cafebcf91b477817826b49
             int escolha = JOptionPane.showOptionDialog(
                     this,
                     "Deseja realmente excluir esta refeição?",
@@ -160,12 +167,21 @@ public class TelaMonitoramento extends JFrame {
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
                     null,
+<<<<<<< HEAD
                     opcoes,
                     opcoes[0]
             );
 
             if (escolha == JOptionPane.YES_OPTION) {
                 double valorExcluido = Double.parseDouble(kcalRef.get().replace(",", "."));
+=======
+                    opcoes, // Nomes dos botões personalizados
+                    opcoes[0] // Botão padrão focado
+            );
+
+            // No showOptionDialog, o índice 0 corresponde à primeira opção do array ("Sim")
+            if (escolha == 0) {
+>>>>>>> a77dc080149cb695f1cafebcf91b477817826b49
                 controller.excluirRefeicao(tipo, (int) usuarioLogado.getId());
 
                 atualizarCalculadora(-valorExcluido);
