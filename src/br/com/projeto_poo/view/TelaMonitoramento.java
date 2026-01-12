@@ -40,7 +40,6 @@ public class TelaMonitoramento extends JFrame {
         lblUser.setForeground(Color.WHITE);
         lblUser.setFont(new Font("Arial", Font.BOLD, 14));
 
-        // BOTÃO VER PERFIL (Adicionado aqui)
         JButton btnPerfil = new JButton("Ver Perfil");
         btnPerfil.setFocusPainted(false);
         btnPerfil.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -51,7 +50,7 @@ public class TelaMonitoramento extends JFrame {
         lblData.setForeground(Color.WHITE);
 
         linha1.add(lblUser, BorderLayout.WEST);
-        linha1.add(btnPerfil, BorderLayout.CENTER); // O botão fica centralizado na barra superior
+        linha1.add(btnPerfil, BorderLayout.CENTER);
         linha1.add(lblData, BorderLayout.EAST);
 
         // Linha 2: Resumo de Calorias
@@ -73,7 +72,7 @@ public class TelaMonitoramento extends JFrame {
         painelSuperior.add(linha2);
         add(painelSuperior, BorderLayout.NORTH);
 
-        // --- CORPO (REFEIÇÕES) ---
+        // --- CORPO ---
         painelRefeicoes = new JPanel();
         painelRefeicoes.setLayout(new BoxLayout(painelRefeicoes, BoxLayout.Y_AXIS));
         add(new JScrollPane(painelRefeicoes), BorderLayout.CENTER);
@@ -138,28 +137,23 @@ public class TelaMonitoramento extends JFrame {
             String nKcal = JOptionPane.showInputDialog(this, "Novas calorias:", kcalRef.get());
 
             if (nDesc != null && nKcal != null) {
-                double valorAntigo = Double.parseDouble(kcalRef.get().replace(",", "."));
-                double valorNovo = Double.parseDouble(nKcal.replace(",", "."));
-                controller.modificarRefeicao(tipo, nDesc, nKcal, (int) usuarioLogado.getId());
-                atualizarCalculadora(valorNovo - valorAntigo);
-                descRef.set(nDesc);
-                kcalRef.set(nKcal);
-                lbl.setText(String.format("<html><b>%s</b>: %s (%.2f kcal)</html>", tipo, nDesc, valorNovo));
+                try {
+                    double valorAntigo = Double.parseDouble(kcalRef.get().replace(",", "."));
+                    double valorNovo = Double.parseDouble(nKcal.replace(",", "."));
+                    controller.modificarRefeicao(tipo, nDesc, nKcal, (int) usuarioLogado.getId());
+                    atualizarCalculadora(valorNovo - valorAntigo);
+                    descRef.set(nDesc);
+                    kcalRef.set(nKcal);
+                    lbl.setText(String.format("<html><b>%s</b>: %s (%.2f kcal)</html>", tipo, nDesc, valorNovo));
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Valor inválido.");
+                }
             }
         });
 
         JButton btnDel = new JButton("Excluir");
         btnDel.addActionListener(e -> {
-<<<<<<< HEAD
-            // Definindo as opções personalizadas
             Object[] opcoes = {"Sim", "Não"};
-
-=======
-            // Definimos os textos dos botões em um array
-            Object[] opcoes = {"Sim", "Não"};
-
-            // Usamos o showOptionDialog para ter controle total sobre os botões
->>>>>>> a77dc080149cb695f1cafebcf91b477817826b49
             int escolha = JOptionPane.showOptionDialog(
                     this,
                     "Deseja realmente excluir esta refeição?",
@@ -167,25 +161,14 @@ public class TelaMonitoramento extends JFrame {
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
                     null,
-<<<<<<< HEAD
                     opcoes,
                     opcoes[0]
             );
 
-            if (escolha == JOptionPane.YES_OPTION) {
+            if (escolha == 0) { // 0 é o índice do "Sim"
                 double valorExcluido = Double.parseDouble(kcalRef.get().replace(",", "."));
-=======
-                    opcoes, // Nomes dos botões personalizados
-                    opcoes[0] // Botão padrão focado
-            );
-
-            // No showOptionDialog, o índice 0 corresponde à primeira opção do array ("Sim")
-            if (escolha == 0) {
->>>>>>> a77dc080149cb695f1cafebcf91b477817826b49
                 controller.excluirRefeicao(tipo, (int) usuarioLogado.getId());
-
                 atualizarCalculadora(-valorExcluido);
-
                 painelRefeicoes.remove(linha);
                 painelRefeicoes.revalidate();
                 painelRefeicoes.repaint();
