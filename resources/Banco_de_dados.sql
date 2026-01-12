@@ -45,6 +45,7 @@ CREATE TABLE IF not exists refeicao (
     hora_registro TIME NOT NULL,
     usuario_id INT NOT NULL,
     total_calorias DOUBLE NOT NULL,
+    tipo VARCHAR(20) NOT NULL,
     -- Referência para a tabela usuario
     CONSTRAINT fk_usuario_refeicao FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );

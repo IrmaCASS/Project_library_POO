@@ -8,6 +8,7 @@ public class Alimento {
     private double gorduras;
     private String categoria;
     private double porcaoPadrao;
+    private long id;
 
     public Alimento() {
     }
@@ -58,5 +59,12 @@ public class Alimento {
     }
     public void setPorcaoPadrao(double porcaoPadrao) {
         this.porcaoPadrao = porcaoPadrao;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public long getId(){
+        return this.id;
     }
 }

@@ -130,12 +130,29 @@ public class TelaCadastroUsuario extends JFrame {
 
     private static class NumericDocument extends PlainDocument {
         private final boolean allowDecimal;
-        public NumericDocument(boolean allowDecimal) { this.allowDecimal = allowDecimal; }
+        public NumericDocument(boolean allowDecimal) {
+            this.allowDecimal = allowDecimal;
+        }
+
         @Override
         public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
             if (str == null) return;
             String regex = allowDecimal ? "[0-9.,]" : "[0-9]";
             if (str.matches(regex)) super.insertString(offs, str, a);
         }
+    } // <-- Linha 115: Aqui termina a classe NumericDocument
+
+    // Este método agora está no lugar certo para rodar o projeto
+    public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            new TelaCadastroUsuario().setVisible(true);
+        });
     }
+
 }

@@ -10,6 +10,8 @@ public class Refeicao {
     private List<Alimento> alimentos;
     private Usuario usuario;
     private double totalCalorias;
+    private String tipo;
+    private long id;
 
     public LocalDate getData() {
         return data;
@@ -44,5 +46,18 @@ public class Refeicao {
     }
     public void setTotalCalorias(double totalCalorias) {
         this.totalCalorias = totalCalorias;
+    }
+
+    public String getTipo(){
+        return this.tipo;
+    }
+    public void setTipo(String tipo){
+        this.tipo = tipo;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public long getId(){
+        return this.id;
     }
 }
