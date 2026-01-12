@@ -1,9 +1,9 @@
 package br.com.projeto_poo.view;
+
 import br.com.projeto_poo.controller.RefeicaoController;
 import br.com.projeto_poo.model.Alimento;
 import br.com.projeto_poo.model.Refeicao;
 import br.com.projeto_poo.model.Usuario;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -18,19 +18,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class TelaCadastroRefeicao extends JFrame {
+public class TelaCadastroRefeicao extends JFrame
+{
     private JComboBox<String> cbTipoRefeicao;
     private JTable tabelaAlimentos;
     private DefaultTableModel tableModel;
     private JLabel lblTotalCalorias;
     private double totalCaloriasAcumuladas = 0;
 
-    // ID do usuário - VOCÊ PRECISA DEFINIR COMO OBTER ISSO
-    // Opções: 1) Passar no construtor, 2) Buscar do usuário logado, 3) Solicitar no início
-    private Long usuarioIdLogado = 1L; // TEMPORÁRIO: Altere conforme sua lógica
+    private Long usuarioIdLogado = 1L;
     private TelaMonitoramento parent;
 
-    public TelaCadastroRefeicao(TelaMonitoramento parent) {
+    public TelaCadastroRefeicao(TelaMonitoramento parent)
+    {
         this.parent = parent;
         setTitle("Cadastro de Refeição");
         setSize(700, 550);
@@ -43,7 +43,8 @@ public class TelaCadastroRefeicao extends JFrame {
         painelSuperior.setBorder(BorderFactory.createTitledBorder("Dados da Refeição"));
 
         painelSuperior.add(new JLabel("Tipo de Refeição:"));
-        cbTipoRefeicao = new JComboBox<>(new String[]{
+        cbTipoRefeicao = new JComboBox<>(new String[]
+                {
                 "Café da Manhã",
                 "Almoço",
                 "Jantar",
@@ -131,7 +132,8 @@ public class TelaCadastroRefeicao extends JFrame {
         add(painelInferior, BorderLayout.SOUTH);
     }
 
-    private void abrirDialogoAlimento(ActionEvent e) {
+    private void abrirDialogoAlimento(ActionEvent e)
+    {
         JTextField nome = new JTextField();
         JTextField cal = new JTextField();
         JTextField prot = new JTextField();
@@ -158,79 +160,80 @@ public class TelaCadastroRefeicao extends JFrame {
                 JOptionPane.PLAIN_MESSAGE
         );
 
-        if (opcao == JOptionPane.OK_OPTION) {
-            try {
+        if (opcao == JOptionPane.OK_OPTION)
+        {
+            try
+            {
                 String nomeAlimento = nome.getText().trim();
                 if (nomeAlimento.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Nome do alimento não pode estar vazio!", "Erro", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-
                 double calorias = Double.parseDouble(cal.getText().trim());
                 double proteinas = Double.parseDouble(prot.getText().trim());
                 double carboidratos = Double.parseDouble(carb.getText().trim());
                 double gorduras = Double.parseDouble(gord.getText().trim());
 
-                tableModel.addRow(new Object[]{
+                tableModel.addRow(new Object[]
+                        {
                         nomeAlimento,
                         String.format("%.2f", calorias),
                         String.format("%.2f", proteinas),
                         String.format("%.2f", carboidratos),
                         String.format("%.2f", gorduras)
                 });
-
                 atualizarTotalCalorias(calorias);
-
-            } catch (NumberFormatException ex) {
+            } catch (NumberFormatException ex)
+            {
                 JOptionPane.showMessageDialog(this, "Por favor, insira valores numéricos válidos!", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
 
-    private void removerAlimentoSelecionado() {
+    private void removerAlimentoSelecionado()
+    {
         int linhaSelecionada = tabelaAlimentos.getSelectedRow();
-        if (linhaSelecionada >= 0) {
-            // Subtrai as calorias do item removido
+        if (linhaSelecionada >= 0)
+        {
             String caloriasStr = tableModel.getValueAt(linhaSelecionada, 1).toString();
 
             Locale brasil = new Locale("pt", "BR");
             NumberFormat nf = NumberFormat.getInstance(brasil);
 
             double calorias = 0;
-            try {
-                calorias = nf.parse(caloriasStr).doubleValue();
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
+            try {calorias = nf.parse(caloriasStr).doubleValue();}
+            catch (ParseException e) {throw new RuntimeException(e);}
             totalCaloriasAcumuladas -= calorias;
 
             tableModel.removeRow(linhaSelecionada);
             lblTotalCalorias.setText(String.format("Total Calorias: %.2f kcal", totalCaloriasAcumuladas));
-        } else {
+        } else
+        {
             JOptionPane.showMessageDialog(this, "Selecione um alimento para remover!", "Aviso", JOptionPane.WARNING_MESSAGE);
         }
     }
-
-    private void atualizarTotalCalorias(double cal) {
+    private void atualizarTotalCalorias(double cal)
+    {
         totalCaloriasAcumuladas += cal;
         lblTotalCalorias.setText(String.format("Total Calorias: %.2f kcal", totalCaloriasAcumuladas));
     }
-
-    private void limparFormulario() {
+    private void limparFormulario()
+    {
         cbTipoRefeicao.setSelectedIndex(0);
         tableModel.setRowCount(0);
         totalCaloriasAcumuladas = 0;
         lblTotalCalorias.setText("Total Calorias: 0.00 kcal");
     }
-
-    private void salvarRefeicao() {
+    private void salvarRefeicao()
+    {
         // Validação
-        if (tableModel.getRowCount() == 0) {
+        if (tableModel.getRowCount() == 0)
+        {
             JOptionPane.showMessageDialog(this, "Adicione pelo menos um alimento à refeição!", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
-        try {
+        try
+        {
             // Capturar data e hora atuais automaticamente
             LocalDateTime agora = LocalDateTime.now();
             DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -249,13 +252,13 @@ public class TelaCadastroRefeicao extends JFrame {
 
             List<Alimento> alimentos = new ArrayList<Alimento>();
 
-            for (int i = 0; i < tableModel.getRowCount(); i++) {
+            for (int i = 0; i < tableModel.getRowCount(); i++)
+            {
                 String nomeAlimento = tableModel.getValueAt(i, 0).toString();
                 String calorias = tableModel.getValueAt(i, 1).toString();
                 String proteinas = tableModel.getValueAt(i, 2).toString();
                 String carboidratos = tableModel.getValueAt(i, 3).toString();
                 String gorduras = tableModel.getValueAt(i, 4).toString();
-
 
                 Locale brasil = new Locale("pt", "BR");
                 NumberFormat nf = NumberFormat.getInstance(brasil);
@@ -303,7 +306,8 @@ public class TelaCadastroRefeicao extends JFrame {
 
             this.dispose();
 
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             JOptionPane.showMessageDialog(
                     this,
                     "Erro ao salvar refeição: " + ex.getMessage(),

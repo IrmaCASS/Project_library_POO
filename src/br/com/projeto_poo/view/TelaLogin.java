@@ -4,13 +4,15 @@ import br.com.projeto_poo.controller.UsuarioController;
 import javax.swing.*;
 import java.awt.*;
 
-public class TelaLogin extends JFrame {
+public class TelaLogin extends JFrame
+{
     private JTextField txtEmail;
     private JPasswordField txtSenha;
     private JButton btnEntrar, btnIrCadastro;
     private UsuarioController controller;
 
-    public TelaLogin() {
+    public TelaLogin()
+    {
         this.controller = new UsuarioController();
 
         setTitle("Login - Monitoramento Nutricional");
@@ -21,8 +23,8 @@ public class TelaLogin extends JFrame {
 
         inicializarComponentes();
     }
-
-    private void inicializarComponentes() {
+    private void inicializarComponentes()
+    {
         JPanel painel = new JPanel();
         painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
         painel.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
@@ -76,24 +78,25 @@ public class TelaLogin extends JFrame {
         painel.add(btnIrCadastro);
 
         add(painel);
-
         // Eventos
-        btnEntrar.addActionListener(e -> {
+        btnEntrar.addActionListener(e ->
+        {
             String email = txtEmail.getText();
             String senha = new String(txtSenha.getPassword());
-            if (email.isEmpty() || senha.isEmpty()) {
+            if (email.isEmpty() || senha.isEmpty())
+            {
                 JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
                 return;
             }
             controller.efetuarLogin(email, senha, this);
         });
 
-        btnIrCadastro.addActionListener(e -> {
+        btnIrCadastro.addActionListener(e ->
+        {
             new TelaCadastroUsuario().setVisible(true);
             this.dispose();
         });
     }
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new TelaLogin().setVisible(true));
     }

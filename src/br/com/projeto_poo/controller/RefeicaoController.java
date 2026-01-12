@@ -540,63 +540,49 @@ import br.com.projeto_poo.dao.RefeicaoDAO;
 import br.com.projeto_poo.dao.AlimentoDAO;
 import br.com.projeto_poo.model.Refeicao;
 import br.com.projeto_poo.model.Alimento;
-
 import javax.swing.*;
 import java.util.List;
 
-public class RefeicaoController {
-
+public class RefeicaoController
+{
     private RefeicaoDAO refeicaoDAO;
     private AlimentoDAO alimentoDAO;
 
-    public RefeicaoController() {
+    public RefeicaoController()
+    {
         this.refeicaoDAO = new RefeicaoDAO();
         this.alimentoDAO = new AlimentoDAO();
     }
 
-    public Long salvarRefeicao(Refeicao refeicao) {
-        try {
-            // Validações
-            if (refeicao == null) {
-                throw new IllegalArgumentException("Refeição não pode ser nula!");
-            }
-
-            if (!validarRefeicao(refeicao)) {
-                return null;
-            }
+    public Long salvarRefeicao(Refeicao refeicao)
+    {
+        try
+        {
+            if (refeicao == null) {throw new IllegalArgumentException("Refeição não pode ser nula!");}
+            if (!validarRefeicao(refeicao)) {return null;}
 
             // Calcular total de calorias baseado nos alimentos
             double totalCalorias = 0;
-            for (Alimento alimento : refeicao.getAlimentos()) {
-                if (alimento != null) {
-                    totalCalorias += alimento.getCalorias();
-                }
+            for (Alimento alimento : refeicao.getAlimentos())
+            {
+                if (alimento != null) {totalCalorias += alimento.getCalorias();}
             }
-
-            // Configurar a refeição com os alimentos e total de calorias
+            // Configurar a refeição
             refeicao.setTotalCalorias(totalCalorias);
-
-            // REALMENTE SALVAR NO BANCO DE DADOS VIA DAO
+            // salva na quele trem (Banco de dados)
             Long id = refeicaoDAO.salvar(refeicao);
-
-            if (id != null) {
-                refeicao.setId(id);
-            }
+            if (id != null) {refeicao.setId(id);}
 
             return id;
-
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             System.err.println("Erro ao salvar refeição: " + e.getMessage());
             e.printStackTrace();
             return null;
         }
     }
 
-    /**
-     * Modifica uma refeição existente e sua lista de alimentos no banco de dados
-     * @param refeicao Objeto Refeicao com os dados atualizados
-     * @return true se modificou com sucesso, false caso contrário
-     */
+    //Modifica uma refeição existente e a lista de alimentos no banco de dados
     public boolean modificarRefeicao(Refeicao refeicao) {
         try {
             // Validações
@@ -607,32 +593,24 @@ public class RefeicaoController {
             if (refeicao.getId() <= 0) {
                 throw new IllegalArgumentException("ID da refeição inválido para modificação!");
             }
+            if (!validarRefeicao(refeicao)) {return false;}
 
-            if (!validarRefeicao(refeicao)) {
-                return false;
-            }
-
-            // REALMENTE ATUALIZAR NO BANCO DE DADOS VIA DAO
             boolean sucesso = refeicaoDAO.atualizar(
                     refeicao.getId(),
                     refeicao.getTipo(),
                     refeicao.getTotalCalorias()
             );
-
             return sucesso;
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             System.err.println("Erro ao modificar refeição: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
     }
 
-    /**
-     * Lista todas as refeições de um usuário específico do banco de dados
-     * @param usuarioId ID do usuário
-     * @return Lista de refeições do usuário (vazia se não houver)
-     */
+     // Lista todas as refeições de um usuário específico do banco de dados
     public List<Refeicao> listarRefeicoes(Long usuarioId) {
         try {
             // Validação
@@ -652,24 +630,20 @@ public class RefeicaoController {
         }
     }
 
-    /**
-     * Exclui uma refeição pelo seu ID do banco de dados
-     * @param refeicaoId ID da refeição a ser excluída
-     * @return true se excluiu com sucesso, false caso contrário
-     */
-    public boolean excluirRefeicao(long refeicaoId) {
-        try {
+    //Exclui uma refeição pelo seu ID do banco de dados
+    public boolean excluirRefeicao(long refeicaoId)
+    {
+        try
+        {
             // Validação
-            if (refeicaoId <= 0) {
-                throw new IllegalArgumentException("ID da refeição inválido!");
-            }
+            if (refeicaoId <= 0) {throw new IllegalArgumentException("ID da refeição inválido!");}
 
             // REALMENTE EXCLUIR DO BANCO DE DADOS VIA DAO
             boolean sucesso = refeicaoDAO.excluir(refeicaoId);
-
             return sucesso;
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             System.err.println("Erro ao excluir refeição: " + e.getMessage());
             e.printStackTrace();
             return false;
@@ -677,49 +651,36 @@ public class RefeicaoController {
     }
 
     // ==================== MÉTODOS AUXILIARES ====================
-
-    /**
-     * Valida os dados básicos de uma refeição
-     * @param refeicao Objeto a ser validado
-     * @return true se válido, false caso contrário
-     */
-    private boolean validarRefeicao(Refeicao refeicao) {
-        if (refeicao.getTipo() == null || refeicao.getTipo().trim().isEmpty()) {
+    //Valida os dados básicos de uma refeição
+    private boolean validarRefeicao(Refeicao refeicao)
+    {
+        if (refeicao.getTipo() == null || refeicao.getTipo().trim().isEmpty())
+        {
             throw new IllegalArgumentException("O tipo da refeição não pode estar vazio!");
         }
-
-        if (refeicao.getData() == null) {
+        if (refeicao.getData() == null)
+        {
             throw new IllegalArgumentException("A data da refeição não pode ser nula!");
         }
-
-        if (refeicao.getHora() == null) {
+        if (refeicao.getHora() == null)
+        {
             throw new IllegalArgumentException("A hora da refeição não pode ser nula!");
         }
-
-        if (refeicao.getUsuario() == null || refeicao.getUsuario().getId() <= 0) {
+        if (refeicao.getUsuario() == null || refeicao.getUsuario().getId() <= 0)
+        {
             throw new IllegalArgumentException("Usuário inválido ou não informado!");
         }
-
         return true;
     }
 
-    /**
-     * Método opcional para usar com interface gráfica
-     * Exibe mensagem de erro em JOptionPane
-     * @param mensagem Mensagem de erro
-     * @param parent Componente pai
-     */
-    public void exibirErroGUI(String mensagem, JFrame parent) {
+    //Método opcional para usar com interface gráfica
+    public void exibirErroGUI(String mensagem, JFrame parent)
+    {
         JOptionPane.showMessageDialog(parent, mensagem, "Erro", JOptionPane.ERROR_MESSAGE);
     }
 
-    /**
-     * Método opcional para usar com interface gráfica
-     * Exibe mensagem de sucesso em JOptionPane
-     * @param mensagem Mensagem de sucesso
-     * @param parent Componente pai
-     */
-    public void exibirSucessoGUI(String mensagem, JFrame parent) {
+    public void exibirSucessoGUI(String mensagem, JFrame parent)
+    {
         JOptionPane.showMessageDialog(parent, mensagem, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
 }

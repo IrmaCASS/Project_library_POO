@@ -7,19 +7,19 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class TelaCadastroUsuario extends JFrame {
+public class TelaCadastroUsuario extends JFrame
+{
     private JTextField txtNome, txtIdade, txtPeso, txtAltura, txtGordura, txtMassa, txtMeta, txtEmail;
     private JPasswordField txtSenha;
     private JComboBox<String> cbSexo;
     private JButton btnSalvar, btnLimpar;
     private UsuarioController controller;
 
-    public TelaCadastroUsuario() {
+    public TelaCadastroUsuario()
+    {
         this.controller = new UsuarioController();
         setTitle("Cadastro de Usuário");
         setSize(400, 600);
@@ -27,8 +27,8 @@ public class TelaCadastroUsuario extends JFrame {
         setLocationRelativeTo(null);
         inicializarComponentes();
     }
-
-    private void inicializarComponentes() {
+    private void inicializarComponentes()
+    {
         JPanel painelPrincipal = new JPanel(new GridLayout(12, 2, 10, 10));
         painelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
@@ -64,9 +64,11 @@ public class TelaCadastroUsuario extends JFrame {
         txtEmail.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                if (isEmailValido(txtEmail.getText())) {
+                if (isEmailValido(txtEmail.getText()))
+                {
                     txtEmail.setBorder(BorderFactory.createLineBorder(new Color(46, 139, 87), 1)); // Verde
-                } else {
+                } else
+                {
                     txtEmail.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
                 }
             }
@@ -96,22 +98,24 @@ public class TelaCadastroUsuario extends JFrame {
     }
 
     // --- NOVA LÓGICA DE VALIDAÇÃO REGEX ---
-    private boolean isEmailValido(String email) {
+    private boolean isEmailValido(String email)
+    {
         String regex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         return email.matches(regex);
     }
-
     private void acaoSalvar() {
         String email = txtEmail.getText().trim();
 
         // Validar e-mail antes de chamar o controller
-        if (!isEmailValido(email)) {
+        if (!isEmailValido(email))
+        {
             JOptionPane.showMessageDialog(this, "Por favor, insira um e-mail válido!", "Erro de Validação", JOptionPane.ERROR_MESSAGE);
             txtEmail.requestFocus();
             return;
         }
 
-        try {
+        try
+        {
             controller.cadastrarUsuario(
                     txtNome.getText(),
                     Integer.parseInt(txtIdade.getText()),
@@ -126,12 +130,12 @@ public class TelaCadastroUsuario extends JFrame {
                     this
             );
             JOptionPane.showMessageDialog(this, "Sucesso!");
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
         }
+        catch (Exception ex) {JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());}
     }
 
-    private void limparCampos() {
+    private void limparCampos()
+    {
         txtNome.setText("");
         txtIdade.setText("");
         txtPeso.setText("");
@@ -143,19 +147,18 @@ public class TelaCadastroUsuario extends JFrame {
         txtEmail.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border")); // Reseta a borda
         txtSenha.setText("");
     }
-
-    private static class NumericDocument extends PlainDocument {
+    private static class NumericDocument extends PlainDocument
+    {
         private final boolean allowDecimal;
 
-        public NumericDocument(boolean allowDecimal) {
-            this.allowDecimal = allowDecimal;
-        }
+        public NumericDocument(boolean allowDecimal) { this.allowDecimal = allowDecimal; }
 
         @Override
-        public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+        public void insertString(int offs, String str, AttributeSet a) throws BadLocationException
+        {
             if (str == null) return;
             String regex = allowDecimal ? "[0-9.,]" : "[0-9]";
             if (str.matches(regex)) super.insertString(offs, str, a);
         }
-    } // <-- Linha 115: Aqui termina a classe NumericDocument
+    }
 }

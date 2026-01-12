@@ -11,7 +11,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class TelaMonitoramento extends JFrame {
+public class TelaMonitoramento extends JFrame
+{
     private MonitoramentoController controller = new MonitoramentoController();
     private JPanel painelRefeicoes;
     private Usuario usuarioLogado;
@@ -20,7 +21,8 @@ public class TelaMonitoramento extends JFrame {
     private JLabel lblMetaDiaria;
     private double totalCalorias = 0.0;
 
-    public TelaMonitoramento(Usuario usuario) {
+    public TelaMonitoramento(Usuario usuario)
+    {
         this.usuarioLogado = usuario;
 
         setTitle("Monitoramento Nutricional");
@@ -85,44 +87,45 @@ public class TelaMonitoramento extends JFrame {
         btnNovo.addActionListener(e ->{
             new TelaCadastroRefeicao(this).setVisible(true);
         });
-
         add(btnNovo, BorderLayout.SOUTH);
-
         carregarDadosIniciais();
     }
-
-    public void carregarDadosIniciais() {
+    public void carregarDadosIniciais()
+    {
         painelRefeicoes.removeAll();
         painelRefeicoes.revalidate();
         painelRefeicoes.repaint();
 
-        if (usuarioLogado != null) {
+        if (usuarioLogado != null)
+        {
             List<Refeicao> dados = controller.listarRefeicoes(usuarioLogado.getId());
             totalCalorias = 0;
 
-            for (Refeicao r : dados){
+            for (Refeicao r : dados)
+            {
 
                 String descricao = "";
-                for (Alimento a : r.getAlimentos()){
+                for (Alimento a : r.getAlimentos())
+                {
                     descricao += a.getNome() + ",";
                 }
 
                 adicionarLinhaRefeicao(r.getId(), r.getTipo(), descricao, r.getTotalCalorias().toString());
                 totalCalorias += r.getTotalCalorias();
             }
-
             lblTotalConsumido.setText(String.format("Consumido: %.2f kcal", totalCalorias));
         }
     }
-
-    private void atualizarCalculadora(double valor) {
+    private void atualizarCalculadora(double valor)
+    {
         totalCalorias += valor;
         lblTotalConsumido.setText(String.format("Consumido: %.2f kcal", totalCalorias));
         double meta = usuarioLogado.getPeso() * 33;
         lblTotalConsumido.setForeground(totalCalorias > meta ? Color.ORANGE : Color.YELLOW);
     }
 
-    private void adicionarLinhaRefeicao(Long refeicaoId, String tipo, String desc, String kcal) {
+    private void adicionarLinhaRefeicao(Long refeicaoId, String tipo, String desc, String kcal)
+    {
         AtomicReference<String> tipoRef = new AtomicReference<>(tipo);
         AtomicReference<String> descRef = new AtomicReference<>(desc);
         AtomicReference<String> kcalRef = new AtomicReference<>(kcal);
@@ -136,13 +139,16 @@ public class TelaMonitoramento extends JFrame {
         lbl.setPreferredSize(new Dimension(450, 30));
 
         JButton btnEdit = new JButton("Modificar");
-        btnEdit.addActionListener(e -> {
+        btnEdit.addActionListener(e ->
+        {
             String nTipo = JOptionPane.showInputDialog(this, "Novo Tipo:", tipoRef.get());
             //String nDesc = JOptionPane.showInputDialog(this, "Nova descrição:", descRef.get());
             String nKcal = JOptionPane.showInputDialog(this, "Novas calorias:", kcalRef.get());
 
-            if (nTipo != null && nKcal != null) {
-                try {
+            if (nTipo != null && nKcal != null)
+            {
+                try
+                {
                     double valorAntigo = Double.parseDouble(kcalRef.get().replace(",", "."));
                     double valorNovo = Double.parseDouble(nKcal.replace(",", "."));
                     controller.modificarRefeicao(refeicaoId, nTipo, nKcal);
@@ -151,14 +157,13 @@ public class TelaMonitoramento extends JFrame {
                     //descRef.set(nDesc);
                     kcalRef.set(nKcal);
                     lbl.setText(String.format("<html><b>%s</b> | %s  | (%.2f kcal)</html>", tipo, desc, valorNovo));
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, "Valor inválido.");
                 }
+                catch (Exception ex) {JOptionPane.showMessageDialog(this, "Valor inválido.");}
             }
         });
-
         JButton btnDel = new JButton("Excluir");
-        btnDel.addActionListener(e -> {
+        btnDel.addActionListener(e ->
+        {
             Object[] opcoes = {"Sim", "Não"};
             int escolha = JOptionPane.showOptionDialog(
                     this,
@@ -171,7 +176,8 @@ public class TelaMonitoramento extends JFrame {
                     opcoes[0]
             );
 
-            if (escolha == 0) { // 0 é o índice do "Sim"
+            if (escolha == 0)
+            { // 0 é o índice do "Sim"
                 double valorExcluido = Double.parseDouble(kcalRef.get().replace(",", "."));
                 controller.excluirRefeicao(refeicaoId);
                 atualizarCalculadora(-valorExcluido);
@@ -180,7 +186,6 @@ public class TelaMonitoramento extends JFrame {
                 painelRefeicoes.repaint();
             }
         });
-
         linha.add(lbl); linha.add(btnEdit); linha.add(btnDel);
         painelRefeicoes.add(linha);
         painelRefeicoes.revalidate();

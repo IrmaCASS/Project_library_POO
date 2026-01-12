@@ -7,16 +7,20 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import java.util.Date;
 
-public class UsuarioController {
+public class UsuarioController
+{
     private UsuarioDAO dao = new UsuarioDAO();
 
-    public void efetuarLogin(String email, String senha, JFrame telaLogin) {
+    public void efetuarLogin(String email, String senha, JFrame telaLogin)
+    {
         Usuario usuario = dao.validarLogin(email, senha);
 
-        if (usuario != null) {
+        if (usuario != null)
+        {
             new TelaMonitoramento(usuario).setVisible(true);
             if (telaLogin != null) telaLogin.dispose();
-        } else {
+        } else
+        {
             JOptionPane.showMessageDialog(telaLogin,
                     "E-mail ou senha incorretos!",
                     "Erro de Autenticação",
@@ -25,7 +29,8 @@ public class UsuarioController {
     }
 
     public void cadastrarUsuario(String nome, int idade, float peso, float altura, String sexo,
-                                 float gordura, float massa, String meta, String email, String senha, JFrame tela) {
+                                 float gordura, float massa, String meta, String email, String senha, JFrame tela)
+    {
         try {
             Usuario u = new Usuario();
             u.setNome(nome);
@@ -36,8 +41,8 @@ public class UsuarioController {
             // Se o usuário digitou 1.75, multiplicamos por 100 para salvar 175 (cm)
             // Math.round evita erros de arredondamento em floats.
             int alturaCentimetros = Math.round(altura * 100);
-            u.setAltura(alturaCentimetros);
 
+            u.setAltura(alturaCentimetros);
             u.setSexo(sexo);
             u.setPorcentagemGordura(gordura);
             u.setMassaCorporal(massa);
@@ -53,9 +58,11 @@ public class UsuarioController {
             if (tela != null) tela.dispose();
             new TelaMonitoramento(u).setVisible(true);
 
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException e)
+        {
             JOptionPane.showMessageDialog(tela, "Erro nos campos numéricos. Verifique se usou ponto em vez de vírgula.");
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             JOptionPane.showMessageDialog(tela, "Erro ao cadastrar: " + e.getMessage());
         }
     }

@@ -2,13 +2,13 @@ package br.com.projeto_poo.controller;
 
 import br.com.projeto_poo.dao.RefeicaoDAO;
 import br.com.projeto_poo.model.Refeicao;
-
 import java.util.List;
 
 public class MonitoramentoController {
     private RefeicaoDAO refeicaoDao = new RefeicaoDAO();
 
-    public double calcularTotalCalorias(List<String[]> refeicoes) {
+    public double calcularTotalCalorias(List<String[]> refeicoes)
+    {
         double total = 0;
         for (String[] r : refeicoes) {
             try {
@@ -20,13 +20,12 @@ public class MonitoramentoController {
         }
         return total;
     }
-
-    // Mantendo os métodos anteriores com melhoria no tratamento de números
     public void excluirRefeicao(Long refeicaoId) {
         refeicaoDao.excluir(refeicaoId);
     }
 
-    public void modificarRefeicao(Long refeicaoId, String tipo, String novaKcal) {
+    public void modificarRefeicao(Long refeicaoId, String tipo, String novaKcal)
+    {
         try {
             double kcal = Double.parseDouble(novaKcal.replace(",", "."));
             refeicaoDao.atualizar(refeicaoId, tipo, kcal);
@@ -34,8 +33,6 @@ public class MonitoramentoController {
             System.err.println("Erro: Valor de calorias inválido.");
         }
     }
-
-    // Caso precise listar tudo sem filtro de data (para compatibilidade)
     public List<Refeicao> listarRefeicoes(Long usuarioId) {
         return refeicaoDao.buscarPorUsuario(usuarioId);
     }
