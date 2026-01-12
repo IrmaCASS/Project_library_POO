@@ -33,14 +33,30 @@ public class TelaCadastroUsuario extends JFrame {
         painelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // ... (Seus campos JLabel e JTextField anteriores)
-        painelPrincipal.add(new JLabel("Nome:")); txtNome = new JTextField(); painelPrincipal.add(txtNome);
-        painelPrincipal.add(new JLabel("Idade:")); txtIdade = new JTextField(); painelPrincipal.add(txtIdade);
-        painelPrincipal.add(new JLabel("Peso (kg):")); txtPeso = new JTextField(); painelPrincipal.add(txtPeso);
-        painelPrincipal.add(new JLabel("Altura (m):")); txtAltura = new JTextField(); painelPrincipal.add(txtAltura);
-        painelPrincipal.add(new JLabel("Sexo:")); cbSexo = new JComboBox<>(new String[]{"Masculino", "Feminino", "Outro"}); painelPrincipal.add(cbSexo);
-        painelPrincipal.add(new JLabel("% Gordura:")); txtGordura = new JTextField(); painelPrincipal.add(txtGordura);
-        painelPrincipal.add(new JLabel("Massa Corporal:")); txtMassa = new JTextField(); painelPrincipal.add(txtMassa);
-        painelPrincipal.add(new JLabel("Meta:")); txtMeta = new JTextField(); painelPrincipal.add(txtMeta);
+        painelPrincipal.add(new JLabel("Nome:"));
+        txtNome = new JTextField();
+        painelPrincipal.add(txtNome);
+        painelPrincipal.add(new JLabel("Idade:"));
+        txtIdade = new JTextField();
+        painelPrincipal.add(txtIdade);
+        painelPrincipal.add(new JLabel("Peso (kg):"));
+        txtPeso = new JTextField();
+        painelPrincipal.add(txtPeso);
+        painelPrincipal.add(new JLabel("Altura (m):"));
+        txtAltura = new JTextField();
+        painelPrincipal.add(txtAltura);
+        painelPrincipal.add(new JLabel("Sexo:"));
+        cbSexo = new JComboBox<>(new String[]{"Masculino", "Feminino", "Outro"});
+        painelPrincipal.add(cbSexo);
+        painelPrincipal.add(new JLabel("% Gordura:"));
+        txtGordura = new JTextField();
+        painelPrincipal.add(txtGordura);
+        painelPrincipal.add(new JLabel("Massa Corporal:"));
+        txtMassa = new JTextField();
+        painelPrincipal.add(txtMassa);
+        painelPrincipal.add(new JLabel("Meta:"));
+        txtMeta = new JTextField();
+        painelPrincipal.add(txtMeta);
 
         // CAMPO E-MAIL COM VALIDAÇÃO VISUAL
         painelPrincipal.add(new JLabel("E-mail:"));
@@ -130,6 +146,7 @@ public class TelaCadastroUsuario extends JFrame {
 
     private static class NumericDocument extends PlainDocument {
         private final boolean allowDecimal;
+
         public NumericDocument(boolean allowDecimal) {
             this.allowDecimal = allowDecimal;
         }
@@ -141,18 +158,4 @@ public class TelaCadastroUsuario extends JFrame {
             if (str.matches(regex)) super.insertString(offs, str, a);
         }
     } // <-- Linha 115: Aqui termina a classe NumericDocument
-
-    // Este método agora está no lugar certo para rodar o projeto
-    public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        SwingUtilities.invokeLater(() -> {
-            new TelaCadastroUsuario().setVisible(true);
-        });
-    }
-
 }
