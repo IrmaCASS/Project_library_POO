@@ -6,11 +6,8 @@ import br.com.projeto_poo.model.Refeicao;
 import java.util.List;
 
 public class MonitoramentoController {
-   // private MonitoramentoDAO dao = new MonitoramentoDAO();
-
     private RefeicaoDAO refeicaoDao = new RefeicaoDAO();
 
-     // 2. Calcula o total de calorias de uma lista de refeições (Calculadora)
     public double calcularTotalCalorias(List<String[]> refeicoes) {
         double total = 0;
         for (String[] r : refeicoes) {
