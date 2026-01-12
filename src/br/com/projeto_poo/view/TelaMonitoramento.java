@@ -80,7 +80,10 @@ public class TelaMonitoramento extends JFrame {
         // --- RODAPÉ ---
         JButton btnNovo = new JButton("Adicionar Nova Refeição");
         btnNovo.setFont(new Font("Arial", Font.BOLD, 13));
-        btnNovo.addActionListener(e -> {
+        btnNovo.addActionListener(e ->{
+            new TelaCadastroRefeicao().setVisible(true);
+        });
+        /*btnNovo.addActionListener(e -> {
             String tipo = JOptionPane.showInputDialog(this, "Tipo (ex: Almoço):");
             String desc = JOptionPane.showInputDialog(this, "Descrição:");
             String kcal = JOptionPane.showInputDialog(this, "Calorias:");
@@ -94,7 +97,7 @@ public class TelaMonitoramento extends JFrame {
                     JOptionPane.showMessageDialog(this, "Erro nos valores informados.");
                 }
             }
-        });
+        });*/
         add(btnNovo, BorderLayout.SOUTH);
 
         carregarDadosIniciais();
