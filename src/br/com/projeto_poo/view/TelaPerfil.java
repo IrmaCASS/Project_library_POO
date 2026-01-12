@@ -4,9 +4,10 @@ import br.com.projeto_poo.model.Usuario;
 import javax.swing.*;
 import java.awt.*;
 
-public class TelaPerfil extends JFrame {
-
-    public TelaPerfil(Usuario usuario) {
+public class TelaPerfil extends JFrame
+{
+    public TelaPerfil(Usuario usuario)
+    {
         setTitle("Meu Perfil Nutricional");
         setSize(400, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Fecha apenas esta janela
@@ -62,7 +63,8 @@ public class TelaPerfil extends JFrame {
     }
 
     // Método auxiliar para criar as linhas de dados esteticamente
-    private JPanel criarLinhaInformacao(String rotulo, String valor) {
+    private JPanel criarLinhaInformacao(String rotulo, String valor)
+    {
         JPanel p = new JPanel(new BorderLayout());
         p.setBackground(Color.WHITE);
         p.setMaximumSize(new Dimension(400, 30));
