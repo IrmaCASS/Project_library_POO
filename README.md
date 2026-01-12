@@ -549,7 +549,7 @@ PASS: ""
 
 ## 📐 Diagrama de Classes
 
-![Diagrama de Classes](Diagrama_classe_e_pacotes/diagrama-classe.png)
+![Diagrama de Classes](imagens_renomeadas/imagens_renomeadas/Diagrama_classe_e_pacotes/diagrama-classe.png)
 
 ### Estrutura do Diagrama
 
@@ -571,7 +571,7 @@ O diagrama mostra:
 
 ### 1. Tela de Login
 
-![Tela de Login](telas/tela-login.jpeg)
+![Tela de Login](imagens_renomeadas/imagens_renomeadas/telas/tela-login.jpeg)
 
 Interface minimalista com campos de e-mail e senha, botão "ENTRAR" e link para cadastro.
 
@@ -579,7 +579,7 @@ Interface minimalista com campos de e-mail e senha, botão "ENTRAR" e link para 
 
 ### 2. Tela de Cadastro de Usuário
 
-![Cadastro de Usuário](telas/tela-cadastro-usuario.jpeg)
+![Cadastro de Usuário](imagens_renomeadas/imagens_renomeadas/telas/tela-cadastro-usuario.jpeg)
 
 Formulário completo com campos para:
 - Nome, Idade, Peso (kg), Altura (m)
@@ -590,7 +590,7 @@ Formulário completo com campos para:
 
 ### 3. Tela de Monitoramento
 
-![Monitoramento Nutricional](telas/tela-monitoramento.jpeg)
+![Monitoramento Nutricional](imagens_renomeadas/imagens_renomeadas/telas/tela-monitoramento.jpeg)
 
 Dashboard com:
 - Nome do usuário (Jonas Valentim)
@@ -604,7 +604,7 @@ Dashboard com:
 
 ### 4. Tela de Perfil do Usuário
 
-![Perfil do Usuário](telas/tela-perfil.jpeg)
+![Perfil do Usuário](imagens_renomeadas/imagens_renomeadas/telas/tela-perfil.jpeg)
 
 Perfil completo exibindo:
 - Nome: JONAS VALENTIM
@@ -621,7 +621,7 @@ Perfil completo exibindo:
 
 ### 5. Tela de Cadastro de Refeição
 
-![Cadastro de Refeição](telas/tela-cadastro-refeicao.jpeg)
+![Cadastro de Refeição](imagens_renomeadas/imagens_renomeadas/telas/tela-cadastro-refeicao.jpeg)
 
 Formulário de refeição com:
 - Tipo de Refeição: Café da Manhã (dropdown)
@@ -683,11 +683,13 @@ java -cp "out;lib/h2-2.4.240.jar" br.com.projeto_poo.view.TelaLogin
 Project_library_POO/
 │
 ├── database/              # Banco H2 (criado automaticamente)
-├── Diagrama_classe_e_pacotes/  # Diagramas UML
+├── imagens_renomeadas/
+│   └── imagens_renomeadas/
+│       ├── Diagrama_classe_e_pacotes/  # Diagramas UML
+│       └── telas/         # Screenshots
 ├── lib/                   # H2 JAR
 ├── resources/             # SQL scripts
 ├── src/                   # Código fonte
-├── telas/                 # Screenshots
 └── README.md
 ```
 
