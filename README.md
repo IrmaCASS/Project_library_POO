@@ -549,7 +549,7 @@ PASS: ""
 
 ## 📐 Diagrama de Classes
 
-![Diagrama de Classes](Diagrama_classe_e_pacotes/diagrama%20de%20classe.png)
+![Diagrama de Classes](Diagrama_classe_e_pacotes/diagrama-classe.png)
 
 ### Estrutura do Diagrama
 
@@ -571,7 +571,7 @@ O diagrama mostra:
 
 ### 1. Tela de Login
 
-![Tela de Login](telas/WhatsApp%20Image%202026-01-12%20at%2017.39.28.jpeg)
+![Tela de Login](telas/tela-login.jpeg)
 
 Interface minimalista com campos de e-mail e senha, botão "ENTRAR" e link para cadastro.
 
@@ -579,25 +579,18 @@ Interface minimalista com campos de e-mail e senha, botão "ENTRAR" e link para 
 
 ### 2. Tela de Cadastro de Usuário
 
-![Cadastro de Usuário](telas/WhatsApp%20Image%202026-01-12%20at%2017.42.43.jpeg)
+![Cadastro de Usuário](telas/tela-cadastro-usuario.jpeg)
 
 Formulário completo com campos para:
-- Nome
-- Idade
-- Peso (kg)
-- Altura (m)
-- Sexo
-- % Gordura
-- Massa Corporal
-- Meta
-- E-mail
-- Senha
+- Nome, Idade, Peso (kg), Altura (m)
+- Sexo, % Gordura, Massa Corporal
+- Meta, E-mail, Senha
 
 ---
 
 ### 3. Tela de Monitoramento
 
-![Monitoramento Nutricional](telas/WhatsApp%20Image%202026-01-12%20at%2017.42.44.jpeg)
+![Monitoramento Nutricional](telas/tela-monitoramento.jpeg)
 
 Dashboard com:
 - Nome do usuário (Jonas Valentim)
@@ -611,7 +604,7 @@ Dashboard com:
 
 ### 4. Tela de Perfil do Usuário
 
-![Perfil do Usuário](telas/WhatsApp%20Image%202026-01-12%20at%2017.43.12.jpeg)
+![Perfil do Usuário](telas/tela-perfil.jpeg)
 
 Perfil completo exibindo:
 - Nome: JONAS VALENTIM
@@ -628,16 +621,11 @@ Perfil completo exibindo:
 
 ### 5. Tela de Cadastro de Refeição
 
-![Cadastro de Refeição](telas/WhatsApp%20Image%202026-01-12%20at%2017.43.55.jpeg)
+![Cadastro de Refeição](telas/tela-cadastro-refeicao.jpeg)
 
 Formulário de refeição com:
 - Tipo de Refeição: Café da Manhã (dropdown)
-- Tabela de alimentos com colunas:
-  - Nome
-  - Calorias (kcal)
-  - Proteínas (g)
-  - Carbos (g)
-  - Gorduras (g)
+- Tabela de alimentos com colunas: Nome, Calorias (kcal), Proteínas (g), Carbos (g), Gorduras (g)
 - Botões: "Adicionar Alimento" (azul) e "Remover Selecionado" (vermelho)
 - Total Calorias: 0.00 kcal (verde)
 - Botões finais: "Limpar Tudo" e "Salvar Refeição..."
